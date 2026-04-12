@@ -61,9 +61,9 @@ async function run() {
         if (job) {
           application.title = job.title,
             application.company = job.company,
+            application.location = job.location,
             application.company_logo = job.company_logo
         }
-
       }
       res.send(result)
     })
