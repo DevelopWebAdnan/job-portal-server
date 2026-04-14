@@ -31,7 +31,7 @@ async function run() {
     const jobsCollection = client.db('jobPortal').collection('jobs');
     const jobApplicationsCollection = client.db('jobPortal').collection('job_applications');
 
-    // jobs related apis
+    // jobs related APIs
     app.get('/jobs', async (req, res) => {
       const cursor = jobsCollection.find();
       const result = await cursor.toArray();
@@ -45,6 +45,11 @@ async function run() {
       res.send(result);
     })
 
+    app.post('/jobs', async(req, res) => {
+      const newJob = req.body;
+      const result = await jobsCollection.insertOne(newJob);
+      res.send(result);
+    })
     // job application apis
     // get all data, get one data, get some data [0, 1, many]
 
