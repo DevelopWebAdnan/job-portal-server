@@ -32,7 +32,7 @@ const verifyToken = (req, res, next) => {
     if (err) {
       return res.status(401).send({ message: "Unauthorized access" })
     }
-    //
+    req.user = decoded;
     next();
   })
 }
@@ -102,6 +102,10 @@ async function run() {
       const email = req.query.email;
       const query = { applicant_email: email };
       const result = await jobApplicationsCollection.find(query).toArray()
+
+      if (req.user.email !== req.query.email) {
+        return res.status(403).send({ message: 'forbidden access' })
+      }
 
       // poor way to aggregate data
       for (const application of result) {
