@@ -66,7 +66,16 @@ async function run() {
       res
         .cookie('token', token, {
           httpOnly: true,
-          secure: false, // http://localhost:5173/signIn
+          secure: false, // in localhost
+        })
+        .send({ success: true });
+    })
+
+    app.post('/logout', (req, res) => {
+      res
+        .clearCookie('token', {
+          httpOnly: true,
+          secure: false,
         })
         .send({ success: true });
     })
