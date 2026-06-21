@@ -93,7 +93,10 @@ async function run() {
 
       const sort = req.query?.sort;
       const search = req.query?.search;
+      const min = req.query?.min;
+      const max = req.query?.max;
 
+      console.log(req.query);
       let query = {};
       let sortedQuery = {};
 
@@ -108,7 +111,15 @@ async function run() {
       if (search) {
         query.location = { $regex: search, $options: 'i' };
       }
-      console.log(query)
+
+      if (min && max) {
+        query = {
+          ...query,
+          "salaryRange.min": { $gte: parseInt(min) },
+          "salaryRange.max": { $lte: parseInt(max) }
+        }
+      }
+
       const cursor = jobsCollection.find(query).sort(sortedQuery);
       const result = await cursor.toArray();
       res.send(result);
